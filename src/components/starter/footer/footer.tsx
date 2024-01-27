@@ -7,9 +7,9 @@ export default component$(() => {
 
   return (
     <footer>
-      <div class="container">
-        <a href="https://www.builder.io/" target="_blank" class={styles.anchor}>
-          <span>Made with ♡ by Builder.io</span>
+      <div class="footer">
+        <a href="https://www.github.com/brianmock" target="_blank" class={styles.anchor}>
+          <span>Made with ♡ by bmock</span>
           <span class={styles.spacer}>|</span>
           <span>{serverTime.value.date}</span>
         </a>

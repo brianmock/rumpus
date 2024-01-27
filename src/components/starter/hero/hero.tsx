@@ -18,8 +18,8 @@ export default component$(() => {
             const defaults = {
               spread: 360,
               ticks: 70,
-              gravity: 0,
-              decay: 0.95,
+              gravity: 0.5,
+              decay: .85,
               startVelocity: 30,
               colors: ["006ce9", "ac7ff4", "18b6f6", "713fc2", "ffffff"],
               origin: {

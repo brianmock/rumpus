@@ -1,9 +1,11 @@
-import { component$, Slot, useStyles$ } from "@builder.io/qwik";
+import { useSignal, component$, type Signal, Slot, useStyles$ } from "@builder.io/qwik";
+import { useContextProvider, createContextId } from '@builder.io/qwik';
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 
 import Header from "../components/starter/header/header";
 import Footer from "../components/starter/footer/footer";
+import Avatar from "../components/avatar";
 
 import styles from "./styles.css?inline";
 
@@ -18,6 +20,8 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
+export const AvatarContext = createContextId<Signal<string>>('wink');
+
 export const useServerTimeLoader = routeLoader$(() => {
   return {
     date: new Date().toISOString(),
@@ -25,11 +29,15 @@ export const useServerTimeLoader = routeLoader$(() => {
 });
 
 export default component$(() => {
+  const avatar = useSignal('sob');
+  useContextProvider(AvatarContext, avatar);
   useStyles$(styles);
+
   return (
     <>
       <Header />
       <main>
+        <Avatar />
         <Slot />
       </main>
       <Footer />
