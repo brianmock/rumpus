@@ -11,7 +11,7 @@ export const AVATARS: Record<string, string> = {
   tongue: '(͡° ͜ʖ ͡°)',
   smirk: '(¬‿¬)',
   skeptical: '(ಠ_ಠ)',
-  confused: '¯\(°_o)/¯',
+  confused: '¯\\(°_o)/¯',
   cry: '(ಥ﹏ಥ)',
   angry: '(ง ͠° ͟ل͜ ͡°)ง',
   shocked: 'ლ(ಠ_ಠლ)',
@@ -20,7 +20,7 @@ export const AVATARS: Record<string, string> = {
   kiss: '(づ￣ ³￣)づ',
   angel: '☜(⌒▽⌒)☞',
   dance: '┌(ㆆ㉨ㆆ)ʃ',
-  crab: '(\|) ._. (|/)',
+  crab: '(\\|) ._. (|/)',
   robot: '{•̃_•̃}',
 };
 
