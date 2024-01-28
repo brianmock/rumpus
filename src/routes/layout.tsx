@@ -1,5 +1,9 @@
-import { useSignal, component$, type Signal, Slot, useStyles$ } from "@builder.io/qwik";
-import { useContextProvider, createContextId } from '@builder.io/qwik';
+import { component$, Slot, useStore, useStyles$, type Signal } from "@builder.io/qwik";
+import {
+  useContext,
+  useContextProvider,
+  createContextId,
+} from '@builder.io/qwik';
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 
@@ -20,7 +24,9 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
-export const AvatarContext = createContextId<Signal<string>>('wink');
+export interface Position { x: number; y: number }
+export const AvatarContext = createContextId<Position>('avatar.context');
+
 
 export const useServerTimeLoader = routeLoader$(() => {
   return {
@@ -29,9 +35,9 @@ export const useServerTimeLoader = routeLoader$(() => {
 });
 
 export default component$(() => {
-  const avatar = useSignal('sob');
-  useContextProvider(AvatarContext, avatar);
   useStyles$(styles);
+  const avatarPosition = useStore<Position>({x: 0, y: 0});
+  useContextProvider(AvatarContext, avatarPosition);
 
   return (
     <>
