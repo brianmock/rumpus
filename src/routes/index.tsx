@@ -2,7 +2,7 @@ import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import styles from "./styles.css?inline";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
-import Pinball from "../components/pinball";
+import Destination from "../components/destination";
 
 
 export default component$(() => {
@@ -12,13 +12,13 @@ export default component$(() => {
   return (
     <>
       <div class="destination breakout">
-        Breakout
+        <Destination destination="breakout" />
       </div>
       <div class="destination bulletin">
         Wall of Brian
       </div>
       <div class="destination pinball">
-        <Pinball />
+        <Destination destination="pinball" />
       </div>
       <div class="destination snake">
         Snake
