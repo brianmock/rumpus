@@ -207,6 +207,8 @@ button.button-small {
   border: 2px solid var(--qwik-light-blue);
   color: var(--qwik-light-blue);
   position: absolute;
+  height: 200px;
+  width: 200px;
 }
 
 .breakout {
@@ -220,8 +222,7 @@ button.button-small {
 }
 
 .pinball {
-  scale: 1 0.35;
-  bottom: -6rem;
+  bottom: 6rem;
   left: 7rem;
 }
 

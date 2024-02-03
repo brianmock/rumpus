@@ -37,7 +37,7 @@
 
 .avatar {
   user-select: none;
-  background: white;
+  background: transparent;
   color: black;
   padding: 1rem;
   position: absolute;

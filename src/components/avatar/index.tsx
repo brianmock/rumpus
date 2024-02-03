@@ -88,7 +88,7 @@ export default component$(() => {
   useVisibleTask$(() => {
     const intervalId = setInterval(() => {
       updatePosition(position, direction)
-    }, 10);
+    }, 15);
     return () => clearInterval(intervalId);
   });
 
@@ -104,7 +104,7 @@ export default component$(() => {
 
   return (
     <>
-      <div style={{ top: position.y, left: position.x }} class="avatar" onClick$={() => showOptions.value = !showOptions.value}>
+      <div style={{ cursor: 'pointer', top: position.y, left: position.x }} class="avatar" onClick$={() => showOptions.value = !showOptions.value}>
         <div class="head">{AVATARS[selectedAvatar.value]}</div>
         <div class="legs" style={{ marginTop: 1, textAlign: 'center' }}>
           {legs.value}

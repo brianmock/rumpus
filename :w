@@ -1,11 +1,9 @@
-import { $, component$, useContext, useSignal, useStore, useComputed$, useVisibleTask$, useOnDocument, useStylesScoped$ } from '@builder.io/qwik'
+import { $, component$, useContext, useSignal, useStore, useComputed$, useVisibleTask$, useOnDocument } from '@builder.io/qwik'
 import { Link, useNavigate } from '@builder.io/qwik-city';
-import styles from "./styles.css?inline";
 
 import { AvatarContext } from '../../routes/layout';
 
 export default component$(() => {
-  useStylesScoped$(styles);
   const nav = useNavigate();
   const pinballRect = useStore<{
     bottom?: number;
@@ -74,8 +72,8 @@ export default component$(() => {
 "     |\\'";
 
   return (
-    <div style={{ width: '100%', height: '100%' }} ref={pinballRef}>
-      <span style={{ color: 'black' }}>{insidePinball.value && 'Press enter!'}</span>
+    <div ref={pinballRef}>
+      <span style={{ color: 'black' }}>{insidePinball.value && 'Press enter to navigate to Pinball!'}</span>
       <Link href="/pinball">
         <pre class="pinball">{pinballAscii}</pre>
       </Link>
