@@ -33,8 +33,8 @@ export function usePaddle() {
 
 export function drawPaddle(ctx: CanvasRenderingContext2D, paddleX: number, canvas: HTMLCanvasElement) {
   ctx.beginPath();
-  ctx.rect(paddleX, canvas.height-PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT);
-  ctx.fillStyle = "#0095DD";
+  ctx.roundRect(paddleX, canvas.height-PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT, 10);
+  ctx.fillStyle = "#565554";
   ctx.fill();
   ctx.closePath();
 }

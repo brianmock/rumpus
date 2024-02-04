@@ -4,14 +4,13 @@ export type BrickType = 'easy' | 'medium' | 'hard';
 export type Brick = { x: number, y: number, status: number, type: BrickType };
 
 export const BRICK_TYPES: Record<BrickType, { columns: number, height: number, width: number, color: string, points: number }> = {
-  easy: { columns: 7, height: 20, width: 75, color: 'green', points: 1 },
-  medium: { columns: 7, height: 15, width: 60, color: 'orange', points: 2 },
-  hard: { columns: 9, height: 10, width: 45, color: 'red', points: 3 },
+  easy: { columns: 7, height: 20, width: 75, color: '#90AA86', points: 1 },
+  medium: { columns: 7, height: 15, width: 60, color: '#F7DBA7', points: 2 },
+  hard: { columns: 9, height: 10, width: 45, color: '#C57B57', points: 3 },
 };
 
 const brickPadding = 15;
 const brickHorizontalPadding = 30;
-
 
 export function drawBrick(row: number, column: number, ctx: CanvasRenderingContext2D, brick: Brick, offsetTop: number, offsetLeft: number) {
   const {width, color, height} = BRICK_TYPES[brick.type];
@@ -21,8 +20,8 @@ export function drawBrick(row: number, column: number, ctx: CanvasRenderingConte
   brick.y = brickY;
   ctx.beginPath();
   ctx.rect(brickX, brickY, width, height);
-  ctx.strokeStyle = color;
-  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.fill();
   ctx.closePath();
 }
 
@@ -60,4 +59,8 @@ export function createBricks(level: number) {
   });
 
   return [...bricks.hard, ...bricks.medium, ...bricks.easy];
+}
+
+export function isInBrick({ brick, x, y }: { brick: Brick, x: number, y: number }) {
+  return x > brick.x && x < brick.x + BRICK_TYPES[brick.type].width && y > brick.y && y < brick.y + BRICK_TYPES[brick.type].height;
 }

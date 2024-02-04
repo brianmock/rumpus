@@ -1,7 +1,7 @@
 import { $, useOnDocument, component$, useSignal, useVisibleTask$ } from '@builder.io/qwik'
-import { BRICK_TYPES, type Brick, type BrickType, drawBricks, createBricks } from './Brick';
+import { BRICK_TYPES, type Brick, type BrickType, drawBricks, createBricks, isInBrick } from './Brick';
 import { PADDLE_WIDTH, PADDLE_HEIGHT, usePaddle, drawPaddle } from './Paddle';
-import { BALL_RADIUS, drawBall } from './Ball';
+import { drawBall, generateBallPoints } from './Ball';
 
 export const LEVELS: Record<number, Record<BrickType, number>> = {
   1: { easy: 3, medium: 3, hard: 2 },
@@ -9,12 +9,19 @@ export const LEVELS: Record<number, Record<BrickType, number>> = {
   3: { easy: 1, medium: 0, hard: 2 },
 }
 
+export const POWER_UPS = {
+  ball: ['super', 'rainbow', 'fast', 'slow'],
+  paddle: ['wide', 'narrow'],
+};
+
 export function generateRandomDirection() {
   const initialDirection = Math.floor(Math.random() * 8);
   return Math.random() < 0.5 ? -initialDirection : initialDirection;
 }
 
 export default component$(() => {
+  const augmentations = useSignal([]);
+  const ballRadius = 10 * (augmentations.value.filter(el => el === 'super').length + 1);
   const level = useSignal(1);
   const levelComplete = useSignal(false);
   const levelFailed = useSignal(false);
@@ -48,38 +55,53 @@ export default component$(() => {
       paddleX.value = (canvas.width- PADDLE_WIDTH)/2;
 
       function collisionDetection() {
+        const ballPoints = generateBallPoints(x.value, y.value, ballRadius);
         bricks.value.forEach(row => row.forEach(b => {
-          const { width = 0, height = 0, points = 0 } = BRICK_TYPES[b.type];
-          if(b.status == 1) {
-            if(x.value > b.x && x.value < b.x + width && y.value > b.y && y.value < b.y + height) {
-              dy.value = -dy.value;
-              b.status = 0;
-              score.value += points;
-              if(bricks.value.every(row => row.every(brick => brick.status === 0) )) {
-                levelComplete.value = true;
+          const { points = 0 } = BRICK_TYPES[b.type];
+          Object.keys(ballPoints).forEach((side) => { 
+            const coords = ballPoints[side as keyof typeof ballPoints];
+            if(b.status == 1) {
+              if (isInBrick({ brick: b, x: coords.x, y: coords.y })) {
+                switch(side) {
+                  case 'top':
+                  case 'bottom':
+                    dy.value = -dy.value;
+                    break;
+                  case 'left':
+                  case 'right':
+                    dx.value = -dx.value;
+                    break;
+                  default:
+                    break;
+                }
+                b.status = 0;
+                score.value += points;
+                if(bricks.value.every(row => row.every(brick => brick.status === 0) )) {
+                  levelComplete.value = true;
+                }
               }
             }
-          }
+          });
         }));
       }
 
       function draw() {
         ctx!.clearRect(0, 0, canvas.width, canvas.height);
         drawBricks(ctx!, bricks.value);
-        drawBall(ctx!, x.value, y.value);
+        drawBall({ augmentations: augmentations.value, ctx: ctx!, x: x.value, y: y.value, ballRadius });
         drawPaddle(ctx!, paddleX.value, canvas);
         collisionDetection();
 
         // Bounce off walls
-        if(x.value + dx.value > canvas.width- BALL_RADIUS || x.value + dx.value < BALL_RADIUS) {
+        if(x.value + dx.value > canvas.width- ballRadius || x.value + dx.value < ballRadius) {
           dx.value = -dx.value;
         }
         // Bounce off ceiling
-        if(y.value + dy.value < BALL_RADIUS) {
+        if(y.value + dy.value < ballRadius) {
           dy.value = -dy.value;
         }
         // Bounce off paddle or lose life
-        else if(y.value + PADDLE_HEIGHT + dy.value > canvas.height - BALL_RADIUS) {
+        else if(y.value + PADDLE_HEIGHT + dy.value > canvas.height - ballRadius) {
           if(x.value > paddleX.value && x.value < paddleX.value + PADDLE_WIDTH) {
             dy.value = -dy.value;
             dx.value = 8 * ((x.value - (paddleX.value + PADDLE_WIDTH/2)) / PADDLE_WIDTH);
