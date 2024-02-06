@@ -47,7 +47,23 @@ export default component$(() => {
   );
 
   useVisibleTask$(() => {
+    // Resize canvas to fit screen
+    function onResize(entries) {
+      for (const entry of entries) {
+        if (entry.devicePixelContentBoxSize) {
+          const width = entry.devicePixelContentBoxSize[0].inlineSize;
+          const height = entry.devicePixelContentBoxSize[0].blockSize;
+          const displayWidth = Math.round(width);
+          const displayHeight = Math.round(height);
+          canvasRef.value!.width = displayWidth;
+          canvasRef.value!.height = displayHeight - (8 * 8);
+        }
+      }
+    }
+
     if (canvasRef.value) {
+      const resizeObserver = new ResizeObserver(onResize);
+      resizeObserver.observe(canvasRef.value!, {box: 'device-pixel-content-box'});
       const canvas = canvasRef.value;
       const ctx = canvas.getContext("2d");
       x.value = canvas.width / 2;
@@ -132,20 +148,19 @@ export default component$(() => {
         y.value += dy.value;
         requestAnimationFrame(draw);
       }
-
       draw();
     }
   });
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {levelComplete.value && <button onClick$={() => {
+      {levelComplete.value && <button style={{ position: 'absolute' }} onClick$={() => {
         level.value += 1
         lives.value = 3
         bricks.value = createBricks(level.value)
         levelComplete.value = false
       }}>next level!</button>}
-      {levelFailed.value && <button onClick$={() => {
+      {levelFailed.value && <button style={{ position: 'absolute' }} onClick$={() => {
         lives.value = 3
         bricks.value = createBricks(level.value)
         levelFailed.value = false
@@ -154,7 +169,7 @@ export default component$(() => {
       <div>Lives: {lives.value}</div>
       <div>Score: {score.value}</div>
       <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <canvas ref={canvasRef} id="pinball" height={640} width={960} />
+        <canvas ref={canvasRef} id="pinball" style={{ display: 'block', width: '100vw', height: 'calc(100vh - 8rem)' }} />
       </div>
     </div>
   );
