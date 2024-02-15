@@ -1,13 +1,11 @@
-import { component$, Slot, useStore, useStyles$, type Signal } from "@builder.io/qwik";
+import { component$, Slot, useStore, useStyles$ } from "@builder.io/qwik";
 import {
-  useContext,
   useContextProvider,
   createContextId,
 } from '@builder.io/qwik';
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 
-import Header from "../components/starter/header/header";
 import Footer from "../components/starter/footer/footer";
 import Avatar from "../components/avatar";
 
@@ -41,7 +39,6 @@ export default component$(() => {
 
   return (
     <>
-      <Header />
       <main>
         <Avatar />
         <Slot />

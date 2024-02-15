@@ -1,0 +1,101 @@
+.board {
+  width: 100vw;
+  height: 100vh;
+  background-color: tan;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32vh;
+  width: 24vh;
+  background-color: #f5f5f5;
+}
+
+.mixit {
+  position: absolute;
+  top: 16vh;
+  left: 13vw;
+  display: flex;
+}
+
+.mixit-label {
+  font-size: 1.5vh;
+  text-align: center;
+  color: black;
+  border: 1px solid black;
+  padding: 0.5vh;
+}
+
+.mixit-color {
+  height: 6vh;
+  width: 6vh;
+  border-radius: 50%;
+}
+
+.cyan {
+  background-color: cyan;
+  position: absolute;
+  top: 1vh;
+  left: 1vh;
+}
+.magenta {
+  background-color: magenta;
+  position: absolute;
+  top: 1vh;
+  right: 1vh;
+}
+.yellow {
+  background-color: yellow;
+  position: absolute;
+  bottom: 1vh;
+  left: 1vh;
+}
+.black {
+  background-color: black;
+  position: absolute;
+  bottom: 1vh;
+  right: 1vh;
+}
+
+.pushpin {
+  position: absolute;
+  top: -25%;
+  left: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotate(15deg)
+}
+
+.pintop {
+  width: 30px;
+  height: 7px;
+  background: red;
+  transform: perspective(10px) rotateX(-10deg);
+  position: relative;
+  top: 1px;
+}
+
+.pinmiddle {
+  width: 20px;
+  height: 25px;
+  background: red;
+  transform: perspective(10px) rotateX(2deg);
+}
+
+.pinbottom {
+  width: 35px;
+  height: 15px;
+  background: red;
+  transform: perspective(10px) rotateX(10deg);
+}
+
+.pinpoint {
+  width: 0;
+  height: 0;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  border-top: 30px solid gray;
+}

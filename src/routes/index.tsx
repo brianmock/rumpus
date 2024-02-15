@@ -10,12 +10,12 @@ export default component$(() => {
   useStylesScoped$(styles);
 
   return (
-    <>
+    <div class="main">
       <div class="destination breakout">
         <Destination destination="breakout" />
       </div>
       <div class="destination bulletin">
-        Wall of Brian
+        <Destination destination="bulletin" />
       </div>
       <div class="destination pinball">
         <Destination destination="pinball" />
@@ -23,7 +23,7 @@ export default component$(() => {
       <div class="destination snake">
         Snake
       </div>
-    </>
+    </div>
   );
 });
 

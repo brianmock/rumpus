@@ -202,23 +202,29 @@ button.button-small {
 }
 
 /* INDEX --------------------------------------- */
+.main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
 .destination {
   z-index: 1;
   border: 2px solid var(--qwik-light-blue);
   color: var(--qwik-light-blue);
   position: absolute;
   height: 200px;
-  width: 200px;
+  width: 210px;
 }
 
 .breakout {
   top: 4rem;
-  left: 0;
+  left: 3rem;
 }
 
 .bulletin {
   top: 4rem;
-  right: 0;
+  right: 2rem;
 }
 
 .pinball {

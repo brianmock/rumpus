@@ -1,7 +1,18 @@
-import { $, useOnDocument, component$, useSignal, useVisibleTask$ } from '@builder.io/qwik'
+import { $, useOnDocument, component$, useSignal, useStore, useVisibleTask$, useStylesScoped$ } from '@builder.io/qwik'
 import { BRICK_TYPES, type Brick, type BrickType, drawBricks, createBricks, isInBrick } from './Brick';
 import { PADDLE_WIDTH, PADDLE_HEIGHT, usePaddle, drawPaddle } from './Paddle';
 import { drawBall, generateBallPoints } from './Ball';
+
+import styles from "./styles.css?inline";
+
+type GameState = {
+  gamePaused: boolean,
+  levelComplete: boolean,
+  levelFailed: boolean,
+  lives: number,
+  score: number,
+  level: number,
+}
 
 export const LEVELS: Record<number, Record<BrickType, number>> = {
   1: { easy: 3, medium: 3, hard: 2 },
@@ -20,19 +31,24 @@ export function generateRandomDirection() {
 }
 
 export default component$(() => {
+  useStylesScoped$(styles);
   const augmentations = useSignal([]);
+  const gameState = useStore<GameState>({
+    levelComplete: false,
+    levelFailed: false,
+    gamePaused: false,
+    lives: 3,
+    score: 0,
+    level: 1,
+  });
   const ballRadius = 10 * (augmentations.value.filter(el => el === 'super').length + 1);
-  const level = useSignal(1);
-  const levelComplete = useSignal(false);
   const levelFailed = useSignal(false);
   const dx = useSignal(generateRandomDirection());
   const dy = useSignal(-5);
   const x = useSignal(0)
   const y = useSignal(0)
-  const score = useSignal(0);
-  const lives = useSignal(3);
   const canvasRef = useSignal<HTMLCanvasElement>();
-  const bricks = useSignal<Brick[][]>(createBricks(level.value));
+  const bricks = useSignal<Brick[][]>(createBricks(gameState.level));
   const { rightPressed, leftPressed } = usePaddle();
   const paddleX = useSignal(0);
 
@@ -42,6 +58,16 @@ export default component$(() => {
       const relativeX = event.clientX - (canvasRef.value?.offsetLeft || 0);
       if(relativeX > 0 && relativeX < (canvasRef.value?.width || 0)) {
         paddleX.value = relativeX - PADDLE_WIDTH / 2;
+      }
+    })
+  );
+
+  useOnDocument(
+    'keyup',
+    $((event) => {
+      const { code } = event;
+      if (code === 'Space') {
+        gameState.gamePaused = false;
       }
     })
   );
@@ -91,9 +117,9 @@ export default component$(() => {
                     break;
                 }
                 b.status = 0;
-                score.value += points;
+                gameState.score += points;
                 if(bricks.value.every(row => row.every(brick => brick.status === 0) )) {
-                  levelComplete.value = true;
+                  gameState.levelComplete = true;
                 }
               }
             }
@@ -123,9 +149,9 @@ export default component$(() => {
             dx.value = 8 * ((x.value - (paddleX.value + PADDLE_WIDTH/2)) / PADDLE_WIDTH);
           }
           else {
-            lives.value --;
-            if(!lives.value) {
-              levelFailed.value = true;
+            gameState.lives --;
+            if(!gameState.lives) {
+              gameState.levelFailed = true;
             }
             else {
               x.value = canvas.width/2;
@@ -154,20 +180,20 @@ export default component$(() => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {levelComplete.value && <button style={{ position: 'absolute' }} onClick$={() => {
-        level.value += 1
-        lives.value = 3
-        bricks.value = createBricks(level.value)
-        levelComplete.value = false
+      {gameState.levelComplete && <button style={{ position: 'absolute' }} onClick$={() => {
+        gameState.level += 1
+        gameState.lives = 3
+        bricks.value = createBricks(gameState.level)
+        gameState.levelComplete = false
       }}>next level!</button>}
       {levelFailed.value && <button style={{ position: 'absolute' }} onClick$={() => {
-        lives.value = 3
-        bricks.value = createBricks(level.value)
+        gameState.lives = 3
+        bricks.value = createBricks(gameState.level)
         levelFailed.value = false
       }}>retry!</button>}
-      <div>Level: {level.value}</div>
-      <div>Lives: {lives.value}</div>
-      <div>Score: {score.value}</div>
+      <div class="stat">Level: {gameState.level}</div>
+      <div class="stat">Lives: {gameState.lives}</div>
+      <div class="stat">Score: {gameState.score}</div>
       <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <canvas ref={canvasRef} id="pinball" style={{ display: 'block', width: '100vw', height: 'calc(100vh - 8rem)' }} />
       </div>

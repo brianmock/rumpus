@@ -69,4 +69,39 @@ export const DESTINATIONS = {
     "    |________|    " + "\n" +
     "         ",
   },
+  'bulletin': {
+    'name': 'Bulletin',
+    'path': '/bulletin',
+    'ascii':
+    "              " + "\n" +
+    " ___     _____    " + "\n" +
+    "|___|   |_____|" + "\n" +
+    "|___|   |_____| " + "\n" +
+    "|___|   |_____|" + "\n" +
+    "|___|   |_____|   " + "\n" +
+    "|___|   |_____|" + "\n" +
+    "    _____   _     " + "\n" +
+    "   |_____| |_|    " + "\n" +
+    "   |_____|  _     " + "\n" +
+    "   |_____| |_| _  " + "\n" +
+    "   |_____|    |_| " + "\n" +
+    "   |_____|        " + "\n" +
+    "                  " + "\n" +
+    " w   w  a  l   l  " + "\n" +
+    " w   w a a l   l  " + "\n" +
+    " w w w aaa l   l  " + "\n" +
+    " ww ww a a l   l  " + "\n" +
+    " w   w a a lll lll" + "\n" +
+    "                    " + "\n" +
+    "    ooo fff       " + "\n" +
+    "    o o f          " + "\n" +
+    "    o o fff         " + "\n" +
+    "    ooo f           " + "\n" +
+    "                    " + "\n" +
+    "bbb m  m ooo cc k  k" + "\n" +
+    "b b mmmm o o c  k k " + "\n" +
+    "bbb m  m o o c  kk  " + "\n" +
+    "b b m  m o o c  k k " + "\n" +
+    "bbb m  m ooo cc k  k" + "\n",
+  },
 }
